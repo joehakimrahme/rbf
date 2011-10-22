@@ -74,12 +74,14 @@ int main (int argc, char **argv)
     FILE* bf_file = NULL;
 
 
-    if (argc != 2){
+    if (argc < 2){
         fprintf (stderr, "No script provided. Exiting.\n");
         return EXIT_FAILURE;
     } else
         bf_file = fopen (argv[1], "rb");
-    input = getstring (bf_file);
+
+
+    input = get_file_tostr (bf_file);
 
     while (input[i] != '\0'){
 
@@ -104,11 +106,11 @@ int main (int argc, char **argv)
                 break;
             case '[':
                 if (bytes[pos] == 0)
-                    i = jz(input, i);
+                    i = matchparenup(input, i);
                 break;
             case ']':
                 if (bytes[pos] != 0)
-                    i = jnz(input, i);
+                    i = matchparendown(input, i);
                     break;
             default:
                 break;
