@@ -102,7 +102,9 @@ int main (int argc, char **argv)
                 printf ("%c", bytes[pos]);
                 break;
             case ',':
-                bytes[pos] = fgetc (stdin);
+                bytes[pos] = fgetc(stdin);
+                while( (bytes[pos] == '\n') || (bytes[pos] == ' ') && (bytes[pos] != EOF) )
+                    bytes[pos] = fgetc(stdin);
                 break;
             case '[':
                 if (bytes[pos] == 0)
