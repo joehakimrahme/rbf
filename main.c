@@ -5,6 +5,8 @@
 #define MEM_SIZE 30000
 #define MAX_LINE_LENGTH 256
 
+#define ERRNOMATCH -1
+
 int matchparenup (char* input, int i)
 {
     int nr = 0;
@@ -23,7 +25,7 @@ int matchparenup (char* input, int i)
         }
     }
 
-    return -1;
+    return ERRNOMATCH;
 }
 
 int matchparendown (char* input, int i)
@@ -44,7 +46,7 @@ int matchparendown (char* input, int i)
         }
     }
 
-    return -1;
+    return ERRNOMATCH;
 }
 
 char *get_file_tostr (FILE* file){
@@ -78,7 +80,7 @@ int main (int argc, char **argv)
         fprintf (stderr, "No script provided. Exiting.\n");
         return EXIT_FAILURE;
     } else
-        bf_file = fopen (argv[1], "rb");
+        bf_file = fopen (argv[1], "rb"); // Check for errors?
 
 
     input = get_file_tostr (bf_file);
@@ -118,7 +120,13 @@ int main (int argc, char **argv)
                 break;
         }
 
-        i++;
+        if (i != ERRNOMATCH)
+            i++;
+        else
+        {
+            fprintf (stderr, "ERROR: Umatched '['\n");
+            return EXIT_FAILURE;
+        }
     }
 
     return EXIT_SUCCESS;
